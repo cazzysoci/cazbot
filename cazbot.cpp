@@ -84,13 +84,14 @@ void buildBotnet() {
     int startingIP = 101; // Starting IP address
     int startingPort = 5555; // Starting port number
 
-    for (int i = 0; i < 100000000; ++i) {
+    for (int i = 0; i < 1000; ++i) { // Adjust the number of iterations here
         Bot bot;
         bot.ip = baseIP + std::to_string(startingIP++);
         bot.port = startingPort++;
         bots.push_back(bot);
     }
 }
+
 
 void executeCommand(const std::string& command, const std::string& target) {
     if (command == "start") {
