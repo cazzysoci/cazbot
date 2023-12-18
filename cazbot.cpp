@@ -13,7 +13,7 @@
 #define MAX_THREADS 100
 #define TARGET_PORT 80
 #define MALWARE_FILE_NAME "cazzy.php"
-#define HTML_FILE_NAME "your_html_file.html"
+#define HTML_FILE_NAME "cazzy.html"
 
 struct Bot {
     std::string ip;
