@@ -14,7 +14,7 @@
 #include <sys/socket.h>
 
 #define PACKET_SIZE 4096
-#define MAX_BOTNETS 100000000
+#define MAX_BOTNETS 1000
 
 using namespace std;
 
