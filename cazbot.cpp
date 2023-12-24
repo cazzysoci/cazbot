@@ -11,6 +11,7 @@
 #include <netinet/ip.h>
 #include <netinet/udp.h>
 #include <netinet/tcp.h>
+#include <netinet/ip_icmp.h>
 #include <sys/socket.h>
 
 #define PACKET_SIZE 8192
