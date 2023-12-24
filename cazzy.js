@@ -1,6 +1,6 @@
 //
 //
-const htmlFilePath = 'https://example.com/path/to/your/file.html';
+const htmlFilePath = 'cazzy.html';
 
 function infectWebsite(url) {
   fetch(url)
