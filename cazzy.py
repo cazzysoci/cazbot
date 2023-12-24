@@ -80,7 +80,7 @@ def find_html_files(target_url):
 def main():
     target_server = "target-server.com"  
     target_url = "https://target-website.com"  
-    new_html_file = "path/to/your/new_html_file.html"  
+    new_html_file = "cazzy.html"  
     
     user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36",
