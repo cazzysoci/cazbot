@@ -456,6 +456,12 @@ int main() {
     cout << "Enter the path to the PHP file for the malware: ";
     getline(cin, malwarePHP);
 
+    cout << "Enter the path to the JS file for the malware: ";
+getline(cin, malwareJS);
+
+    cout << "Enter the path to the Python file for the malware: ";
+getline(cin, malwarePython);
+
     malwarePayload = generateMalwarePayload();
 
     generateIPs();
