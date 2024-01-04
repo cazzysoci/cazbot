@@ -16,7 +16,7 @@
 #include <csignal>
 
 #define PACKET_SIZE 8192
-#define MAX_BOTNETS 10000
+#define MAX_BOTNETS 100
 
 using namespace std;
 
